@@ -1,0 +1,33 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "standard"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "space-before-function-paren": [
+            "warn",
+            "always"
+        ],
+        "eol-last": "off"
+    },
+    "globals": {
+        "$": "readonly",
+        "app": "readonly",
+        "bootbox": "readonly"
+    }
+}
