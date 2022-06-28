@@ -28,6 +28,7 @@
     "globals": {
         "$": "readonly",
         "app": "readonly",
-        "bootbox": "readonly"
+        "bootbox": "readonly",
+        "ajaxify": "readonly"
     }
 }

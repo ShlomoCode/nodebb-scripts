@@ -74,25 +74,28 @@ if (typeof $ === 'function') {
         }
 
         let iconClass;
+        let buttonTooltip;
         (async () => {
             const [translator] = await app.require(['translator']);
-            const buttonTooltip = await translator.translate('[[topic:edit]]');
+            buttonTooltip = await translator.translate('[[topic:edit]]');
             iconClass = await selectIcon();
             addEditButtonForPosts(buttonTooltip);
             $(window).on('action:posts.loaded action:topic.loaded', () => addEditButtonForPosts(buttonTooltip));
         })();
 
-        const resetIconBtn = $('<li><a href="#"><i">אפס סמל</i></a></li>')
+        const resetIconBtn = $('<li><a href="#"><i">שנה סמל</i></a></li>')
             .css({ background: 'none', border: 'none' })
             .tooltip({
-                title: 'אפס בחירת סמל',
+                title: 'שנה סמל כפתור עריכת פוסט',
                 placement: 'top',
                 trigger: 'hover',
                 container: 'body'
             })
-            .click(() => {
+            .click(async () => {
                 localStorage.removeItem('edit-post-icon');
-                location.reload();
+                $('.edit-button-was-added').removeClass('edit-button-was-added');
+                iconClass = await selectIcon();
+                ajaxify.refresh();
             });
         $('#main-nav').append(resetIconBtn);
     })();
