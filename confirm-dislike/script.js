@@ -2,7 +2,7 @@
 // @name        Confirm Dislike
 // @version     1.0
 // @author      ShlomoCode
-// @match       *://*
+// @match       *://*/*
 // @description Confirm before disliking a post
 // ==/UserScript==
 if (typeof $ === 'function') {

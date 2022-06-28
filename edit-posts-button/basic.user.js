@@ -2,7 +2,7 @@
 // @name        Add edit post button - basic
 // @version     1.0
 // @author      ShlomoCode
-// @match       *://*
+// @match       *://*/*
 // @description Add edit post button for own posts (for admin - for all posts) for nodebb forums
 // ==/UserScript==
 if (typeof $ === 'function') {

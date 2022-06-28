@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Quick Reply for NodeBB
-// @match       *://*
+// @match       *://*/*
 // @version     1.0
 // @author      ShlomoCode
 // @description Shortcut to open a topic reply for NodeBB forums - ctrl+i
