@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Add edit post button - full
-// @version     1.0
+// @version     1.0.1
 // @author      ShlomoCode
 // @match       *://*/*
 // @description Add edit post button for own posts (for admin - for all posts) for nodebb forums
@@ -23,6 +23,18 @@ if (typeof $ === 'function') {
             {
                 text: 'עט ציפורן',
                 value: 'fa fa-solid fa-pen-fancy'
+            },
+            {
+                text: 'עט רגיל',
+                value: 'fas fa-pen-alt'
+            },
+            {
+                text: 'עט + סרגל',
+                value: 'fas fa-pencil-ruler'
+            },
+            {
+                text: 'זרחן',
+                value: 'fas fa-highlighter'
             }
         ];
 
