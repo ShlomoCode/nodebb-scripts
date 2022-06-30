@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Add edit post button - full
-// @version     1.0.1
+// @version     1.0.2
 // @author      ShlomoCode
 // @match       *://*/*
 // @description Add edit post button for own posts (for admin - for all posts) for nodebb forums
@@ -49,11 +49,11 @@ if (typeof $ === 'function') {
                         callback: function (result) {
                             if (!result || result === 'null') {
                                 localStorage.setItem('edit-post-icon', icons[0].value);
-                                app.alertSuccess(`סמל ברירת מחדל - ${icons[0].text}, הוגדר בהצלחה`);
+                                app.alertSuccess(`סמל ברירת מחדל - "${icons[0].text}", הוגדר בהצלחה`);
                                 resolve(icons[0].value);
                             } else {
                                 localStorage.setItem('edit-post-icon', result);
-                                app.alertSuccess('סמל הוגדר בהצלחה');
+                                app.alertSuccess(`סמל הוגדר בהצלחה - "${icons.find((i) => i.value === result).text}"`);
                                 resolve(result);
                             }
                         }
