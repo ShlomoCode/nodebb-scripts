@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        favorites helper
-// @version     0.5.1
+// @version     1.0
 // @author      ShlomoCode
 // @match       *://*/*
 // @description helper for the Favourites of nodebb sites
@@ -8,8 +8,8 @@
 if (typeof $ === 'function') {
     let bookmarksList;
     async function getBookmarksIds() {
-        if (sessionStorage.getItem('bookmarksIds')) {
-            return JSON.parse(sessionStorage.getItem('bookmarksIds'));
+        if (localStorage.getItem('bookmarksIds')) {
+            return JSON.parse(localStorage.getItem('bookmarksIds'));
         } else {
             const postIds = [];
             let pageIndex = 1;
@@ -21,7 +21,7 @@ if (typeof $ === 'function') {
                 pageIndex++;
                 isNext = !!posts.length;
             } while (isNext);
-            sessionStorage.setItem('bookmarksIds', JSON.stringify(postIds));
+            localStorage.setItem('bookmarksIds', JSON.stringify(postIds));
             return postIds;
         }
     }
