@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        favorites helper
-// @version     0.5
+// @version     0.5.1
 // @author      ShlomoCode
 // @match       *://*/*
 // @description helper for the Favourites of nodebb sites
@@ -116,7 +116,7 @@ if (typeof $ === 'function') {
                 .click(async (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    bootbox.confirm(`האם אתה בטוח שברצונך להסיר מהמועדפים את הפוסט "<a href="/post/${pid}" target="_blank" style="color: gray;">${pText}</a>"?`, async (confirm) => {
+                    bootbox.confirm(`<style>[class="bootbox-close-button close"] { padding: 1px !important; }</style>האם אתה בטוח שברצונך להסיר מהמועדפים את הפוסט "<a href="/post/${pid}" target="_blank" style="color: gray;">${pText}</a>"?`, async (confirm) => {
                         if (!confirm) return;
                         try {
                             await new Promise((resolve, reject) => {
