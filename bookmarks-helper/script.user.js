@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        favorites helper
-// @version     1.0
+// @version     1.1
 // @author      ShlomoCode
 // @match       *://*/*
 // @description helper for the Favourites of nodebb sites
@@ -77,6 +77,14 @@ if (typeof $ === 'function') {
                         $(button).attr('action', action === 'add-bookmark' ? 'remove-bookmark' : 'add-bookmark');
                         $(button).toggleClass('far fa-bookmark fas fa-bookmark');
                         $(button).attr('data-original-title', messages[action === 'add-bookmark' ? 'remove-bookmark' : 'add-bookmark']);
+                        const bookmarksSaved = JSON.parse(localStorage.getItem('bookmarksIds'))
+                        const pIndexSaved = bookmarksSaved.findIndex(item => item === parseInt(pid));
+                        if (pIndexSaved !== -1) {
+                            bookmarksSaved[pIndexSaved] = undefined;
+                            localStorage.setItem('bookmarksIds', JSON.stringify(bookmarksSaved));
+                        } else {
+                            localStorage.setItem('bookmarksIds', JSON.stringify([...bookmarksSaved, pid]));
+                        }
                     } catch (err) {
                         app.alertError(err.message);
                     }
@@ -136,6 +144,12 @@ if (typeof $ === 'function') {
                             });
                             await api.del(`/api/v3/posts/${pid}/bookmark`);
                             $(post).remove();
+                            const bookmarksSaved = JSON.parse(localStorage.getItem('bookmarksIds'))
+                            const pIndexSaved = bookmarksSaved.findIndex(item => item === parseInt(pid));
+                            if (pIndexSaved !== -1) {
+                                bookmarksSaved[pIndexSaved] = undefined;
+                                localStorage.setItem('bookmarksIds', JSON.stringify(bookmarksSaved));
+                            }
                         } catch (err) {
                             if (err !== 'channeled') {
                                 app.alertError(err.message);
