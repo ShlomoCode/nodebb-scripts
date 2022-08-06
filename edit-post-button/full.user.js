@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        Add edit post button - full
-// @version     1.0.2
+// @version     1.1
 // @author      ShlomoCode
 // @match       *://*/*
 // @description Add edit post button for own posts (for admin - for all posts) for nodebb forums
 // ==/UserScript==
-if (typeof $ === 'function') {
+if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     (() => {
         const icons = [
             {

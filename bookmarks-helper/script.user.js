@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        favorites helper
-// @version     1.2
+// @version     1.3
 // @author      ShlomoCode
 // @match       *://*/*
 // @description helper for the Favourites of nodebb sites
 // ==/UserScript==
-if (typeof $ === 'function') {
+if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     let bookmarksList;
     async function getBookmarksIds() {
         if (localStorage.getItem('bookmarksIds')) {
@@ -77,8 +77,8 @@ if (typeof $ === 'function') {
                         $(button).attr('action', action === 'add-bookmark' ? 'remove-bookmark' : 'add-bookmark');
                         $(button).toggleClass('far fa-bookmark fas fa-bookmark');
                         $(button).attr('data-original-title', messages[action === 'add-bookmark' ? 'remove-bookmark' : 'add-bookmark']);
-                        const bookmarksSaved = JSON.parse(localStorage.getItem('bookmarksIds'))
-                        const pIndexSaved = bookmarksSaved.findIndex(item => item === parseInt(pid));
+                        const bookmarksSaved = JSON.parse(localStorage.getItem('bookmarksIds'));
+                        const pIndexSaved = bookmarksSaved.findIndex((item) => item === parseInt(pid));
                         if (pIndexSaved !== -1) {
                             bookmarksSaved[pIndexSaved] = undefined;
                             localStorage.setItem('bookmarksIds', JSON.stringify(bookmarksSaved));
@@ -112,7 +112,7 @@ if (typeof $ === 'function') {
         for (const post of posts) {
             const pid = parseInt($(post).attr('data-pid'), 10);
             const pHeader = $(post).find('.topic-title');
-            const pText = $(post).find('.topic-title').text();
+            const pHText = $(post).find('.topic-title').text();
             const button = $('<button>')
                 .addClass('fas fa-trash-alt')
                 .css({ background: 'none', border: 'none' })
@@ -124,7 +124,7 @@ if (typeof $ === 'function') {
                 .click(async (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    bootbox.confirm(`<style>[class="bootbox-close-button close"] { padding: 1px !important; }</style>האם אתה בטוח שברצונך להסיר מהמועדפים את הפוסט "<a href="/post/${pid}" target="_blank" style="color: gray;">${utils.escapeHTML(pText)}</a>"?`, async (confirm) => {
+                    bootbox.confirm(`<style>[class="bootbox-close-button close"] { padding: 1px !important; }</style>האם אתה בטוח שברצונך להסיר מהמועדפים את הפוסט "<a href="/post/${pid}" target="_blank" style="color: gray;">${utils.escapeHTML(pHText)}</a>"?`, async (confirm) => {
                         if (!confirm) return;
                         try {
                             await new Promise((resolve, reject) => {
@@ -144,8 +144,8 @@ if (typeof $ === 'function') {
                             });
                             await api.del(`/api/v3/posts/${pid}/bookmark`);
                             $(post).remove();
-                            const bookmarksSaved = JSON.parse(localStorage.getItem('bookmarksIds'))
-                            const pIndexSaved = bookmarksSaved.findIndex(item => item === parseInt(pid));
+                            const bookmarksSaved = JSON.parse(localStorage.getItem('bookmarksIds'));
+                            const pIndexSaved = bookmarksSaved.findIndex((item) => item === parseInt(pid));
                             if (pIndexSaved !== -1) {
                                 bookmarksSaved[pIndexSaved] = undefined;
                                 localStorage.setItem('bookmarksIds', JSON.stringify(bookmarksSaved));

@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        Add delete/restore post button
-// @version     1.0
+// @version     1.1
 // @author      ShlomoCode
 // @match       *://*/*
 // @description Add delete/restore post button for own posts (for admin - for all posts) for nodebb forums
 // ==/UserScript==
-if (typeof $ === 'function') {
+if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     async function main () {
         const [api, translator] = await app.require(['api', 'translator']);
         const translations = {

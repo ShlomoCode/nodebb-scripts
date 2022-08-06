@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        Quick Reply for NodeBB
 // @match       *://*/*
-// @version     1.0
+// @version     1.1
 // @author      ShlomoCode
 // @description Shortcut to open a topic reply for NodeBB forums - ctrl+i
 // ==/UserScript==
-if (typeof $ === 'function') {
+if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     $(window).on('action:topic.loaded', (e, data) => {
         $(document).on('keydown', (e) => {
             if (e.ctrlKey && e.keyCode === 73) {
