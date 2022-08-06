@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name        Quick Reply for NodeBB
+// @name        Keyboard shortcut reply for NodeBB
 // @match       *://*/*
-// @version     1.1
+// @version     1.1.1
 // @author      ShlomoCode
-// @description Shortcut to open a topic reply for NodeBB forums - ctrl+i
+// @description Keyboard shortcut for open a topic reply for NodeBB forums - ctrl+i
 // ==/UserScript==
 if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     $(window).on('action:topic.loaded', (e, data) => {
