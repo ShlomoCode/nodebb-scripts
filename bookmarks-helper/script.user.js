@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        favorites helper
-// @version     1.3
+// @version     1.4
 // @author      ShlomoCode
 // @match       *://*/*
 // @description helper for the Favourites of nodebb sites
@@ -163,7 +163,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     }
 
     $(window).on('action:posts.loaded action:topic.loaded', main);
-    $(window).on('action:ajaxify.end', () => {
+    $(window).on('action:ajaxify.end action:posts.loaded', () => {
         if (/^user\/.+\/bookmarks$/.test(ajaxify.currentPage) && ajaxify.data.uid === app.user.uid) manageBookmarks();
     });
     $(window).on('action:ajaxify.end', addLinkToNavigation);
