@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        favorites helper
-// @version     1.5
+// @version     1.6
 // @author      ShlomoCode
 // @match       *://*/*
 // @description helper for the Favourites of nodebb sites
@@ -29,7 +29,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     function initPage() {
         const posts = $('[component="post"]').not('.deleted');
         for (const post of posts) {
-            const pHeader = $(post).find('.post-header');
+            const pHeader = $(post).find('.post-header, .topic-title');
             const button = $('<i style="margin-right: 5px;" class="fa fa-spinner fa-pulse please-await-to-bookmarks-list"></i>').tooltip({
                 title: 'טוען נתוני מועדפים, אנא המתן...',
                 placement: 'top',
@@ -39,7 +39,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
         }
     }
 
-    async function main() {
+    async function addToggleBookmarkBtn() {
         const api = await app.require('api');
         const messages = {
             'add-bookmark': 'הוסף למועדפים',
@@ -59,7 +59,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
         }
         for (const post of posts) {
             const pid = parseInt($(post).attr('data-pid'), 10);
-            const pHeader = $(post).find('.post-header');
+            const pHeader = $(post).find('.post-header, .topic-title');
             const isBookmarked = bookmarksList.includes(pid);
             const button = $('<button>')
                 .addClass(isBookmarked ? 'fas fa-bookmark' : 'far fa-bookmark')
@@ -70,7 +70,9 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                     placement: 'top',
                     trigger: 'hover',
                 })
-                .click(async () => {
+                .click(async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
                     const action = $(button).attr('action');
                     try {
                         await api[action === 'add-bookmark' ? 'put' : 'del'](`/api/v3/posts/${pid}/bookmark`);
@@ -111,7 +113,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
         const posts = $('.posts-list').find('[component="post"]').not('.reject-bookmark-button-was-added');
         for (const post of posts) {
             const pid = parseInt($(post).attr('data-pid'), 10);
-            const pHeader = $(post).find('.topic-title');
+            const pHeader = $(post).find('.post-header, .topic-title');
             const pHText = $(post).find('.topic-title').text();
             const button = $('<button>')
                 .addClass('fas fa-trash-alt')
@@ -162,9 +164,12 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
         }
     }
 
-    $(window).on('action:posts.loaded action:topic.loaded', main);
     $(window).on('action:ajaxify.contentLoaded action:posts.loaded', () => {
-        if (/^user\/.+\/bookmarks$/.test(ajaxify.currentPage) && ajaxify.data.uid === app.user.uid) manageBookmarks();
+        if (/^user\/.+\/bookmarks$/.test(ajaxify.currentPage) && ajaxify.data.uid === app.user.uid) {
+            manageBookmarks();
+        } else {
+            addToggleBookmarkBtn();
+        }
     });
     $(window).on('action:ajaxify.contentLoaded', addLinkToNavigation);
 }
