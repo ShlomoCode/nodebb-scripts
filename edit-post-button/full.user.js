@@ -6,7 +6,8 @@
 // @description Add edit post button for own posts (for admin - for all posts) for nodebb forums
 // ==/UserScript==
 if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
-    (() => {
+    (async () => {
+        const [alerts] = await app.require(['alerts']);
         const icons = [
             {
                 text: 'עיפרון',
@@ -49,11 +50,11 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                         callback: function (result) {
                             if (!result || result === 'null') {
                                 localStorage.setItem('edit-post-icon', icons[0].value);
-                                app.alertSuccess(`סמל ברירת מחדל - "${icons[0].text}", הוגדר בהצלחה`);
+                                alerts.success(`סמל ברירת מחדל - "${icons[0].text}", הוגדר בהצלחה`);
                                 resolve(icons[0].value);
                             } else {
                                 localStorage.setItem('edit-post-icon', result);
-                                app.alertSuccess(`סמל הוגדר בהצלחה - "${icons.find((i) => i.value === result).text}"`);
+                                alerts.success(`סמל הוגדר בהצלחה - "${icons.find((i) => i.value === result).text}"`);
                                 resolve(result);
                             }
                         }

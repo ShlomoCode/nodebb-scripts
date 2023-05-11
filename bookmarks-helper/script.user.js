@@ -40,7 +40,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     }
 
     async function addToggleBookmarkBtn() {
-        const api = await app.require('api');
+        const [api, alerts] = await app.require(['api', 'alerts']);
         const messages = {
             'add-bookmark': 'הוסף למועדפים',
             'remove-bookmark': 'הסר מהמועדפים',
@@ -52,7 +52,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
             try {
                 bookmarksList = await getBookmarksIds();
             } catch (err) {
-                return app.alertError(err.message);
+                return app.error(err.message);
             } finally {
                 $('.please-await-to-bookmarks-list').remove();
             }
@@ -88,7 +88,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                             localStorage.setItem('bookmarksIds', JSON.stringify([...bookmarksSaved, pid]));
                         }
                     } catch (err) {
-                        app.alertError(err.message);
+                        alerts.error(err.message);
                     }
                 });
             pHeader.append(button);
@@ -109,7 +109,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
         }
     }
     async function manageBookmarks() {
-        const api = await app.require('api');
+        const [api, alerts] = await app.require(['api', 'alerts']);
         const posts = $('.posts-list').find('[component="post"]').not('.reject-bookmark-button-was-added');
         for (const post of posts) {
             const pid = parseInt($(post).attr('data-pid'), 10);
@@ -131,7 +131,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                         try {
                             await new Promise((resolve, reject) => {
                                 const alertId = utils.generateUUID();
-                                app.alert({
+                                alerts.alert({
                                     timeout: 2500,
                                     type: 'warning',
                                     alert_id: alertId,
@@ -140,7 +140,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                                     clickfn: () => reject('channeled'),
                                 });
                                 setTimeout(() => {
-                                    app.removeAlert(alertId);
+                                    alerts.remove(alertId);
                                     resolve();
                                 }, 2500);
                             });
@@ -154,7 +154,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                             }
                         } catch (err) {
                             if (err !== 'channeled') {
-                                app.alertError(err.message);
+                                alerts.error(err.message);
                             }
                         }
                     });

@@ -7,7 +7,7 @@
 // ==/UserScript==
 if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
     async function main () {
-        const [api, translator] = await app.require(['api', 'translator']);
+        const [api, translator, alerts] = await app.require(['api', 'translator', 'alerts']);
         const translations = {
             delete: await translator.translate('[[topic:delete]]'),
             restore: await translator.translate('[[topic:restore]]')
@@ -36,7 +36,7 @@ if (typeof $ === 'function' && typeof app === 'object' && app?.user?.uid) {
                             $(button).toggleClass('fa fa-fw fa-trash-o fas fa-trash-restore-alt');
                             $(button).attr('data-original-title', translations[action === 'delete' ? 'restore' : 'delete']);
                         } catch (err) {
-                            app.alertError(err.message);
+                            alerts.error(err.message);
                         }
                     });
                 });
